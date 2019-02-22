@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <import type="com.mordeccai.quickcam.R" />
+        <import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
+        <variable
+            name="presenter"
+            type="com.mordeccai.quickcam.activities.home.HomePresenter"/>
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        tools:context=".activities.home.HomeActivity">
+        <RelativeLayout
+            app:show="@{!presenter.hasProducts()}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/products"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No products"
+                    android:textSize="20dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="80dp"
+                    android:paddingLeft="80dp"
+                    android:textAlignment="center"
+                    android:text="You can tap on the plus button to add a new product and its images."
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            app:show="@{presenter.hasProducts()}"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adapter="@{presenter.productsAdapter}"
+            app:layoutManager="LinearLayoutManager" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_product_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_add_white"
+            android:onClick="@{(v)->presenter.addProduct()}"
+            app:fabSize="normal"
+            android:layout_margin="16dp"/>
+    </RelativeLayout>
+</layout>

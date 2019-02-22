@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:fresco="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools">
+<data>
+    <import type="com.mordeccai.quickcam.R" />
+    <import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
+    <variable
+        name="presenter"
+        type="com.mordeccai.quickcam.activities.view_product.ViewProductPresenter"/>
+</data>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".activities.view_product.ViewProductActivity"
+    >
+    <android.support.v7.widget.RecyclerView
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adapter="@{presenter.photosAdapter}"
+        app:layoutManager="LinearLayoutManager"/>
+</RelativeLayout>
+</layout>

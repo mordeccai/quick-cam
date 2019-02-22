@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="presenter"
+            type="com.mordeccai.quickcam.activities.product.ProductPresenter"/>
+    </data>
+    <ScrollView
+        tools:context=".activities.product.ProductActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    app:show="@{presenter.imagesCaptured.size > 0}"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_bottom">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:text="@{presenter.imagesCaptured[presenter.currentImageIndex][`name`]}"
+                            android:textSize="16dp"
+                            android:textColor="@android:color/black"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:textColor="@android:color/black"
+                            android:text="@{(presenter.currentImageIndex+ 1) +` of ` + presenter.imagesCaptured.size()}"
+                            android:textSize="16dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="end"
+                            android:textAlignment="viewEnd"/>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:onLongClick="@{presenter::onImageLongPress}"
+                        android:background="#f1f1f1"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:layout_centerHorizontal="true"
+                            app:imageUri="@{presenter.currentImageUri}">
+                        </ImageView>
+                        <RelativeLayout
+                            app:show="@{presenter.isLongPressed}"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:background="#CCFF0000"
+                            android:gravity="center">
+                            <LinearLayout
+                                android:layout_height="90dp"
+                                android:layout_width="180dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:weightSum="2">
+
+                                <net.steamcrafted.materialiconlib.MaterialIconView
+                                    android:layout_width="10dp"
+                                    android:layout_height="65dp"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center_vertical"
+                                    android:background="@drawable/white_circular_border_black"
+                                    android:onClick="@{(v)-> presenter.cancelDeletion()}"
+                                    android:scaleType="center"
+                                    app:materialIcon="close"
+                                    app:materialIconColor="#fff"
+                                    app:materialIconSize="24dp" />
+                                <View
+                                    android:layout_width="10dp"
+                                    android:layout_height="match_parent"/>
+                                <net.steamcrafted.materialiconlib.MaterialIconView
+                                    android:layout_width="30dp"
+                                    android:layout_height="80dp"
+                                    android:layout_weight="1"
+                                    app:materialIcon="delete_forever"
+                                    android:layout_gravity="center_vertical"
+                                    android:onClick="@{(v)-> presenter.deleteImage()}"
+                                    app:materialIconColor="#fff"
+                                    app:materialIconSize="30dp"
+                                    android:scaleType="center"
+                                    android:background="@drawable/white_circular_border"
+                                    />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="115dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom"
+                        android:weightSum="2">
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:onClick="@{(v)->presenter.prevImage()}"
+                            android:textColor="@{presenter.prevEnabled()? @color/black: @color/grey}"
+                            android:text="PREV"/>
+                        <View android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/black"/>
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:textColor="@{presenter.nextEnabled()? @color/black: @color/grey}"
+                            android:onClick="@{(v)->presenter.nextImage()}"
+                            android:text="NEXT"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                    android:id="@+id/text_field_boxes"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    app:labelText="Product name"
+                    >
+                    <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                        android:id="@+id/extended_edit_text"
+                        android:layout_width="wrap_content"
+                        android:text="@{presenter.product.name}"
+                        android:onTextChanged="@{presenter.onTextChanged}"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter product name"/>
+                </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/themed_bg"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_marginTop="10dp"  >
+                    <Spinner
+                        android:id="@+id/postfield_category"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="16sp"
+                        android:entries="@{presenter.sideOptions}"
+                        app:onItemSelected="@{presenter.onItemSelected}"
+                        android:background="@null"
+                        android:minHeight="0dp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_arrow_drop_down_black" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="bottom"
+                    android:weightSum="2">
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@android:color/white"
+                            android:stateListAnimator="@null"
+                            android:background="@drawable/primary_button"
+                            android:onClick="@{()->presenter.captureImage()}"
+                            android:text="Capture"
+                            android:elevation="2dp"/>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+                    <View android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@android:color/white"
+                            android:layout_marginRight="5dp"
+                            android:stateListAnimator="@null"
+                            android:background="@drawable/accent_button"
+                            android:onClick="@{(v)-> presenter.saveProduct()}"
+                            android:text="Save"
+                            android:elevation="2dp"/>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</layout>

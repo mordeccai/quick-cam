@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Quick Cam</string>
+    <string name="app_version">2.0.0-rc</string>
+    <string name="app_release_date">17/09/2018</string>
+    <string name="app_developer">Tito Mordeccai</string>
+    <string name="storage_permission_rationale_title">Grant permissions</string>
+    <string name="storage_permition_rationale_message">Grant the permissions</string>
+    <string name="storage_permission_denied_message">Permission has been denied</string>
+</resources>
